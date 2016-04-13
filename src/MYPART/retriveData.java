@@ -5,15 +5,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.ArrayList;
 
 import javax.swing.*;
+
+import org.omg.CORBA.PUBLIC_MEMBER;
+
 import com.google.gson.*;
 public class retriveData{
 	public JPanel getjsp() throws JsonIOException, JsonSyntaxException, FileNotFoundException{
 		String state,city,url;
+		int j;
+		ArrayList<String> favs = new ArrayList<String>();
 		JLabel chosenOne1 = new JLabel();
-		JLabel chosenOne2 = new JLabel();
-		ButtonGroup cbjGroup = new ButtonGroup();
 		JPanel lp = new JPanel(new GridLayout(140, 5));
 		lp.setSize(900, 1300);
 		JsonParser parser = new JsonParser();
@@ -28,26 +32,24 @@ public class retriveData{
 			lp.add(statelb);
 						
 			JsonArray ar = obj.get("stations").getAsJsonArray();
-			for(int j = 0; j<ar.size(); j++){
+			for(j = 0; j<ar.size(); j++){
 				JsonObject subobj = ar.get(j).getAsJsonObject();
 				city = subobj.get("city").getAsString();
-				//url = subobj.get("url").getAsString();
+				url = subobj.get("url").getAsString();
+
 				
-				JRadioButton cjb = new JRadioButton(city);	
+				JCheckBox cjb = new JCheckBox(city);	
 				cjb.setSize(150,20);
 				cjb.addActionListener(new ActionListener(){
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						chosenOne1.setText("The Station you chose is:");
-						chosenOne1.setFont(new java.awt.Font("Dialog", 1, 15));
-						chosenOne1.setSize(150,100);
-						chosenOne2.setText(cjb.getText());
-						chosenOne2.setFont(new java.awt.Font("Dialog", 1, 15));
-						chosenOne2.setSize(150,100);
+						if (cjb.isSelected()) 
+						   {
+							favs.add(cjb.getText().toString());
+						   }
 					}
 					
 				});
-				cbjGroup.add(cjb);
 		        cjb.setSize(100, 30);
 		        lp.add(cjb);
 			
@@ -59,25 +61,53 @@ public class retriveData{
 		}
 		JLabel devideline = new JLabel("===========================");
 		lp.add(devideline);
-	lp.add(chosenOne1);
-	lp.add(chosenOne2);
+	//lp.add(chosenOne1);
+	//for(l=0;l<=200;l++){
+	//	lp.add(chosenOne2[l]);
+	//}
 	
 	JButton confirm = new JButton("OK");
 	confirm.addActionListener(new ActionListener(){
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			JFrame weather = new JFrame("The weather of "+chosenOne2.getText());
+			JFrame njf = new JFrame("What's the weather today?");
 			double width = Toolkit.getDefaultToolkit().getScreenSize().width; 
 			double height = Toolkit.getDefaultToolkit().getScreenSize().height;
-			weather.setSize((int)width/2,(int)height/2);
-			weather.setLocation((int)width/4,(int)height/4); 
-			weather.setResizable(false);
+			njf.setSize((int)width/2,(int)height/2);
+			njf.setLocation(0,0); 
+			njf.setResizable(false);
 			
-			weather.setVisible(true);
-		    weather.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			JPanel wjp = new JPanel();
+			JButton jl;
+			for(int n=0;n<favs.size();n++){
+				jl = new JButton(favs.get(n));
+				jl.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					OpenUrlAction();
+				}});
+				wjp.add(jl);						
+			}
+			njf.add(wjp);
+			njf.setVisible(true);
+		    njf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		}});
+	
+	
 	lp.add(confirm);
 	return lp;
 	}
+	public void OpenUrlAction(){
+		JFrame wjf = new JFrame("WEATHERRRR");
+		JPanel wejp = new JPanel();
+		double width = Toolkit.getDefaultToolkit().getScreenSize().width; 
+		double height = Toolkit.getDefaultToolkit().getScreenSize().height;
+		wjf.add(wejp);
+		wjf.setSize((int)width/2,(int)height/2);
+		wjf.setLocation(0,0); 
+		wjf.setResizable(false);
+		
+		wjf.setVisible(true);
+	    wjf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		}
 }
