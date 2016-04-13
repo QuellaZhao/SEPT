@@ -84,7 +84,18 @@ public class retriveData{
 				jl.addActionListener(new ActionListener(){
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					OpenUrlAction();
+					try {
+						OpenUrlAction();
+					} catch (JsonIOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (JsonSyntaxException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (FileNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}});
 				wjp.add(jl);						
 			}
@@ -97,16 +108,32 @@ public class retriveData{
 	lp.add(confirm);
 	return lp;
 	}
-	public void OpenUrlAction(){
+	public void OpenUrlAction() throws JsonIOException, JsonSyntaxException, FileNotFoundException{
 		JFrame wjf = new JFrame("WEATHERRRR");
 		JPanel wejp = new JPanel();
 		double width = Toolkit.getDefaultToolkit().getScreenSize().width; 
 		double height = Toolkit.getDefaultToolkit().getScreenSize().height;
 		wjf.add(wejp);
-		wjf.setSize((int)width/2,(int)height/2);
+		wjf.setSize((int)width,(int)height);
 		wjf.setLocation(0,0); 
 		wjf.setResizable(false);
 		
+		String dateTime;
+//		JsonParser parser = new JsonParser();
+	//	JsonObject object = (JsonObject) parser.parse(new FileReader("York.json"));
+		//dateTime = object.get("local_date_time").getAsString();
+				
+		String[] coName = {"Date/Time WST","Temp","App Temp","Dew Point","Rel Hum","Delta-T","Wind Direction","Press MSL hPa","Rain since 9am"};
+		Object[][] data = {
+				{"a","a","a","a","a","a","a","a","a"}
+		};
+		JPanel wjp = new JPanel();
+		JTable wTable = new JTable(data,coName);
+		wjp.setLayout(new BorderLayout());
+		wjp.add(wTable.getTableHeader(),BorderLayout.PAGE_START);
+		wjp.add(wTable,BorderLayout.CENTER);
+		
+		wjf.add(wjp);
 		wjf.setVisible(true);
 	    wjf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		}
