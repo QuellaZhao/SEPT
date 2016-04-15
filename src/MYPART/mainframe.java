@@ -49,42 +49,36 @@ public JFrame mframe() throws JsonIOException, JsonSyntaxException, FileNotFound
 		
 		@Override
 		public void windowOpened(WindowEvent e) {
-		jf.dispose();	
+			
 		}
 		
 		@Override
 		public void windowClosing(WindowEvent e) {
-			// TODO Auto-generated method stub
 			
 		}
 		
 		@Override
 		public void windowClosed(WindowEvent e) {
-			// TODO Auto-generated method stub
 			
 		}
 		
 		@Override
 		public void windowActivated(WindowEvent e) {
-			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
 		public void windowDeactivated(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
+			jf.dispose();	
 		}
 
 		@Override
 		public void windowDeiconified(WindowEvent e) {
-			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
 		public void windowIconified(WindowEvent e) {
-			// TODO Auto-generated method stub
 			
 		}
 	});
