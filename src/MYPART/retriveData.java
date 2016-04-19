@@ -1,4 +1,4 @@
-package MYPART;
+package WeatherApp;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -18,9 +18,14 @@ public class retriveData{
 	public JPanel getjsp() throws JsonIOException, JsonSyntaxException, FileNotFoundException{
 		String state,city,url;
 		int j;
+		JComboBox stateCB = new JComboBox();
+		JComboBox cityCB = new JComboBox();
 		ArrayList<String> favs = new ArrayList<String>();
+		ArrayList<String> sts = new ArrayList<String>();
+		ArrayList<String> cts = new ArrayList<String>();
 		JPanel lp = new JPanel(new GridLayout(140, 5));
 		lp.setSize(900, 1300);
+		
 		//get stations names from json file
 		JsonParser parser = new JsonParser();
 		JsonObject object = (JsonObject) parser.parse(new FileReader("stations.json"));
@@ -28,37 +33,22 @@ public class retriveData{
 		for(int i = 0; i<array.size(); i++){
 			JsonObject obj = array.get(i).getAsJsonObject();
 			state = obj.get("state").getAsString();	
-			JLabel statelb = new JLabel(state);
-			statelb.setFont(new java.awt.Font("Dialog", 1, 15));
-			statelb.setSize(100, 50);
-			lp.add(statelb);
+			sts.add(state);
+			stateCB.addItem(state);
+
 			JsonArray ar = obj.get("stations").getAsJsonArray();
 			for(j = 0; j<ar.size(); j++){
 				JsonObject subobj = ar.get(j).getAsJsonObject();
 				city = subobj.get("city").getAsString();
-				url = subobj.get("url").getAsString();
+			//	url = subobj.get("url").getAsString();
 				//use checkbox to display stations
-				JCheckBox cjb = new JCheckBox(city);	
-				cjb.setSize(150,20);
-				cjb.addActionListener(new ActionListener(){
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						if (cjb.isSelected()) 
-						   {
-							favs.add(cjb.getText().toString());
-						   }
-					}
-					
-				});
-		        cjb.setSize(100, 30);
-		        lp.add(cjb);
+				cts.add(city);
+				cityCB.addItem(city);
 			}
-			JLabel devideline = new JLabel("---------------------------");
-			devideline.setSize(500, 50);
-			lp.add(devideline);
 		}
-		JLabel devideline = new JLabel("===========================");
-		lp.add(devideline);
+		lp.add(stateCB);
+		lp.add(cityCB);
+	
 		//a confirm button	
 	JButton confirm = new JButton("OK");
 	confirm.addActionListener(new ActionListener(){
@@ -69,14 +59,14 @@ public class retriveData{
 			double height = Toolkit.getDefaultToolkit().getScreenSize().height;
 			njf.setSize((int)width/5,(int)height/2);
 			njf.setLocation((int)width*2/5,(int)height/5); 
+		
 			//put the chosen stations into a new window
 			JPanel wjp = new JPanel();
 			JScrollPane wsjp = new JScrollPane(wjp);
-			wjp.setLayout(new BoxLayout(wjp, BoxLayout.Y_AXIS));
+			wjp.setLayout(new GridLayout(700, 1));
 			JButton jl;
 			for(int n=0;n<favs.size();n++){
-				jl = new JButton(favs.get(n));
-				jl.setAlignmentX(Component.CENTER_ALIGNMENT);
+				jl = new JButton(favs.get(n));				
 				jl.addActionListener(new ActionListener(){
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -97,7 +87,7 @@ public class retriveData{
 			njf.add(wsjp);
 			njf.setVisible(true);
 		    njf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		    //close the old window BUT HOWWWWWWWW
+    	    //the old window closedsd
 		}});
 	lp.add(confirm);
 	return lp;
