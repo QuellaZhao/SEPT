@@ -23,8 +23,7 @@ public class retriveData{
 		ArrayList<String> favs = new ArrayList<String>();
 		ArrayList<String> sts = new ArrayList<String>();
 		ArrayList<String> cts = new ArrayList<String>();
-		JPanel lp = new JPanel(new GridLayout(140, 5));
-		lp.setSize(900, 1300);
+		JPanel lp = new JPanel();
 		
 		//get stations names from json file
 		JsonParser parser = new JsonParser();
@@ -43,14 +42,21 @@ public class retriveData{
 			//	url = subobj.get("url").getAsString();
 				//use checkbox to display stations
 				cts.add(city);
-				cityCB.addItem(city);
+				cityCB.addItem(city);		
 			}
 		}
 		lp.add(stateCB);
 		lp.add(cityCB);
 	
+		cityCB.addActionListener((new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(cityCB.getSelectedItem()!=""){
+					favs.add(cityCB.getSelectedItem().toString());
+				}
+			}}));
 		//a confirm button	
-	JButton confirm = new JButton("OK");
+		JButton confirm = new JButton("OK");
 	confirm.addActionListener(new ActionListener(){
 		@Override
 		public void actionPerformed(ActionEvent e) {
