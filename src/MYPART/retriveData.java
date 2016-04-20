@@ -166,10 +166,17 @@ public class retriveData{
 				{dateTime[0],temp[0],apptemp[0],dew[0],rel[0],deltat[0],winddir[0],press[0],rain[0]}
 		};
 		JPanel wjp = new JPanel();
+			
 		JTable wTable = new JTable(datas,coName);
 		wjp.setLayout(new BorderLayout());
 		wjp.add(wTable.getTableHeader(),BorderLayout.PAGE_START);
 		wjp.add(wTable,BorderLayout.CENTER);
+		JPanel bp = new JPanel();
+		JButton graphb = new JButton("Graph");
+		graphb.setPreferredSize(new Dimension(75,25));
+		bp.add(graphb);
+		wjp.add(bp,BorderLayout.PAGE_END);
+		
 		
 		wjf.add(wjp);
 		wjf.setVisible(true);
