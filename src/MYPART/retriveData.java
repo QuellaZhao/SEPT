@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.jws.soap.SOAPBinding.Use;
 import javax.swing.*;
@@ -18,46 +19,64 @@ public class retriveData{
 	public JPanel getjsp() throws JsonIOException, JsonSyntaxException, FileNotFoundException{
 		String state,city,url;
 		int j;
-		JComboBox stateCB = new JComboBox();
-		JComboBox cityCB = new JComboBox();
+		JComboBox<String> stateCB = new JComboBox<String>();
+		JComboBox<String> cityCB = new JComboBox<String>();
 		ArrayList<String> favs = new ArrayList<String>();
-		ArrayList<String> sts = new ArrayList<String>();
+		HashMap<String, JsonArray> hm = new HashMap<String, JsonArray>();
 		ArrayList<String> cts = new ArrayList<String>();
+		JsonArray ar = new JsonArray();
 		JPanel lp = new JPanel();
 		
-		//get stations names from json file
+		//get stations names from json file and make then into a combobox
+		//also use hashmap to store states and stations correspondingly
 		JsonParser parser = new JsonParser();
 		JsonObject object = (JsonObject) parser.parse(new FileReader("stations.json"));
 		JsonArray array = object.get("Array").getAsJsonArray();
 		for(int i = 0; i<array.size(); i++){
 			JsonObject obj = array.get(i).getAsJsonObject();
 			state = obj.get("state").getAsString();	
-			sts.add(state);
+			ar = obj.get("stations").getAsJsonArray();
+			hm.put(state, ar);
 			stateCB.addItem(state);
-
-			JsonArray ar = obj.get("stations").getAsJsonArray();
-			for(j = 0; j<ar.size(); j++){
-				JsonObject subobj = ar.get(j).getAsJsonObject();
-				city = subobj.get("city").getAsString();
-			//	url = subobj.get("url").getAsString();
-				//use checkbox to display stations
-				cts.add(city);
-				cityCB.addItem(city);		
-			}
 		}
+		
+		//when chose a state, the other combobox will display its stations
+		stateCB.addActionListener((new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent ae) {
+				int s = stateCB.getSelectedIndex();
+					JsonArray nja = new JsonArray();
+					nja=hm.get(stateCB.getSelectedItem());
+					if(cityCB.getItemCount()!=0){
+						cityCB.removeAllItems();
+					}
+					for(int o = 0;o<nja.size();o++){
+						JsonObject subobj = nja.get(o).getAsJsonObject();
+						cityCB.addItem(subobj.get("city").getAsString());
+					}			
+			}}));
 		lp.add(stateCB);
 		lp.add(cityCB);
-	
-		cityCB.addActionListener((new ActionListener(){
+		
+		//add selected station in favorites
+		JButton addfav = new JButton("ADD");
+		addfav.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(cityCB.getSelectedItem()!=""){
-					favs.add(cityCB.getSelectedItem().toString());
-				}
-			}}));
-		//a confirm button	
+				favs.add(cityCB.getSelectedItem().toString());
+			}});
+		
+		//remove selected station in favorites
+		JButton removefav = new JButton("remove");
+		removefav.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				favs.remove(cityCB.getSelectedItem().toString());
+			}});
+		
+		//confirm and display all selected stations
 		JButton confirm = new JButton("OK");
-	confirm.addActionListener(new ActionListener(){
+		confirm.addActionListener(new ActionListener(){
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			JFrame njf = new JFrame("What's the weather today?");
@@ -95,9 +114,12 @@ public class retriveData{
 		    njf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     	    //the old window closedsd
 		}});
+	lp.add(addfav);
+	lp.add(removefav);
 	lp.add(confirm);
 	return lp;
 	}
+	
 	//get data from station's json file and add data into a new window with a table
 	@SuppressWarnings("null")
 	public void OpenUrlAction() throws JsonIOException, JsonSyntaxException, FileNotFoundException{
