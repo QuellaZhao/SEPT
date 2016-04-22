@@ -3,27 +3,40 @@ package WeatherApp;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.jws.soap.SOAPBinding.Use;
 import javax.swing.*;
-import javax.xml.transform.Templates;
-
-import org.omg.CORBA.PUBLIC_MEMBER;
-
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.LineAndShapeRenderer;
+import org.jfree.data.category.DefaultCategoryDataset;
 import com.google.gson.*;
 public class retriveData{
+	ArrayList<String> favs = new ArrayList<String>();
+	Path uc = Paths.get("UsersChoice.txt");
+	Charset cs = Charset.forName("US-ASCII");
+	
 	public JPanel getjsp() throws JsonIOException, JsonSyntaxException, FileNotFoundException{
-		String state,city,url;
-		int j;
+		String state;
 		JComboBox<String> stateCB = new JComboBox<String>();
 		JComboBox<String> cityCB = new JComboBox<String>();
-		ArrayList<String> favs = new ArrayList<String>();
 		HashMap<String, JsonArray> hm = new HashMap<String, JsonArray>();
-		ArrayList<String> cts = new ArrayList<String>();
+		new ArrayList<String>();
 		JsonArray ar = new JsonArray();
 		JPanel lp = new JPanel();
 		
@@ -38,13 +51,14 @@ public class retriveData{
 			ar = obj.get("stations").getAsJsonArray();
 			hm.put(state, ar);
 			stateCB.addItem(state);
+		
 		}
 		
 		//when chose a state, the other combobox will display its stations
 		stateCB.addActionListener((new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent ae) {
-				int s = stateCB.getSelectedIndex();
+				stateCB.getSelectedIndex();
 					JsonArray nja = new JsonArray();
 					nja=hm.get(stateCB.getSelectedItem());
 					if(cityCB.getItemCount()!=0){
@@ -58,12 +72,28 @@ public class retriveData{
 		lp.add(stateCB);
 		lp.add(cityCB);
 		
+		//Get user's choices 
+		try(BufferedReader reader = Files.newBufferedReader(uc,cs)) {
+			while(reader.readLine()!=null){
+				favs.add(reader.readLine());
+			}
+		} catch (IOException e1) {
+			System.out.println("read failed");
+			e1.printStackTrace();
+		}
+		
 		//add selected station in favorites
 		JButton addfav = new JButton("ADD");
 		addfav.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				favs.add(cityCB.getSelectedItem().toString());
+					try(BufferedWriter writer = Files.newBufferedWriter(uc,cs,StandardOpenOption.APPEND);) {
+						writer.write("\r\n" + favs.get(favs.size()-1) + "\r\n");
+					} catch (IOException e1) {
+						System.out.println("write failed");
+						e1.printStackTrace();
+					}
 			}});
 		
 		//remove selected station in favorites
@@ -72,6 +102,14 @@ public class retriveData{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				favs.remove(cityCB.getSelectedItem().toString());
+				try(BufferedWriter writer = Files.newBufferedWriter(uc,cs,StandardOpenOption.TRUNCATE_EXISTING);) {
+					for(int i = 0;i<favs.size();i++){
+					writer.write(favs.get(i) + "\r\n");
+					}
+				} catch (IOException e1) {
+					System.out.println("write failed");
+					e1.printStackTrace();
+				}
 			}});
 		
 		//confirm and display all selected stations
@@ -133,8 +171,8 @@ public class retriveData{
 		wjf.setResizable(false);
 		
 		String[] dateTime = new String[5];
-		String[] temp = new String[5];
-		String[] apptemp = new String[5];
+		double[] temp = new double[5];
+		double[] apptemp = new double[5];
 		String[] dew = new String[5];
 		String[] rel = new String[5];
 		String[] deltat = new String[5];
@@ -149,14 +187,14 @@ public class retriveData{
 		for(int i = 0; i<data.size(); i++){
 			JsonObject obj = data.get(i).getAsJsonObject();
 			dateTime[i] = obj.get("local_date_time").getAsString();
-			temp[i] = obj.get("local_date_time").getAsString();
-			apptemp[i] = obj.get("local_date_time").getAsString();
-			dew[i] = obj.get("local_date_time").getAsString();
-			rel[i] = obj.get("local_date_time").getAsString();
-			deltat[i] = obj.get("local_date_time").getAsString();
-			winddir[i] = obj.get("local_date_time").getAsString();
-			press[i] = obj.get("local_date_time").getAsString();
-			rain[i] = obj.get("local_date_time").getAsString();
+			temp[i] = obj.get("air_temp").getAsDouble();
+			apptemp[i] = obj.get("apparent_t").getAsDouble();
+			dew[i] = obj.get("dewpt").getAsString();
+			rel[i] = obj.get("rel_hum").getAsString();
+			deltat[i] = obj.get("delta_t").getAsString();
+			winddir[i] = obj.get("wind_dir").getAsString();
+			press[i] = obj.get("press").getAsString();
+			rain[i] = obj.get("rain_trace").getAsString();
 		}
 				
 		String[] coName = {"Date/Time WST","Temp","App Temp","Dew Point","Rel Hum","Delta-T","Wind Direction","Press MSL hPa","Rain since 9am"};
@@ -166,7 +204,8 @@ public class retriveData{
 				{dateTime[0],temp[0],apptemp[0],dew[0],rel[0],deltat[0],winddir[0],press[0],rain[0]}
 		};
 		JPanel wjp = new JPanel();
-			
+		
+		//show the graph
 		JTable wTable = new JTable(datas,coName);
 		wjp.setLayout(new BorderLayout());
 		wjp.add(wTable.getTableHeader(),BorderLayout.PAGE_START);
@@ -175,11 +214,64 @@ public class retriveData{
 		JButton graphb = new JButton("Graph");
 		graphb.setPreferredSize(new Dimension(75,25));
 		bp.add(graphb);
+		graphb.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JFrame gf = new JFrame("Lateast Weather Observations(3 days)");
+				gf.setSize((int)width/2,(int)height/2);
+				gf.setLocation((int)width/4,(int)height/4); 
+				gf.setResizable(false);
+				
+				DefaultCategoryDataset linedataset = new DefaultCategoryDataset();
+				JFreeChart chart = ChartFactory.createLineChart("The Weather", 
+		                "Date", // domain axis label
+		                "Temperature", // range axis label
+		                linedataset, // data
+		                PlotOrientation.VERTICAL, // orientation
+		                true, // include legend
+		                true, // tooltips
+		                false // urls
+		                );
+				chart.setBackgroundPaint(Color.white);
+				CategoryPlot plot = chart.getCategoryPlot();
+				NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+			    rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+			    rangeAxis.setAutoRangeIncludesZero(true);
+			    rangeAxis.setUpperMargin(0.20);
+			    rangeAxis.setLabelAngle(Math.PI / 2.0);
+			    plot.setForegroundAlpha(1.0f);
+			    plot.getRenderer().setSeriesPaint(0, Color.red) ;
+			    plot.getRenderer().setSeriesPaint(1, Color.blue) ;
+				LineAndShapeRenderer renderer = (LineAndShapeRenderer) plot.getRenderer();        
+		        BasicStroke realLine = new BasicStroke(3.6f);
+		        renderer.setSeriesStroke(0, realLine); 
+		        linedataset.addValue(temp[2], "Air Temperature", dateTime[2]);
+		        linedataset.addValue(temp[1], "Air Temperature", dateTime[1]);
+		        linedataset.addValue(temp[0], "Air Temperature", dateTime[0]);
+		        //Temperature
+		        linedataset.addValue(apptemp[2], "Apparent Temperature", dateTime[2]);
+		        linedataset.addValue(apptemp[1], "Apparent Temperature", dateTime[1]);
+		        linedataset.addValue(apptemp[0], "Apparent Temperature", dateTime[0]);
+		        ChartPanel gp = new ChartPanel(chart);
+		        
+				gf.add(gp);
+				gf.setVisible(true);
+			    gf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			}});
 		wjp.add(bp,BorderLayout.PAGE_END);
-		
 		
 		wjf.add(wjp);
 		wjf.setVisible(true);
 	    wjf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		}
+	
+	/*public void saveUsersChoice() throws IOException{
+		Path uc = Paths.get("UsersChoice.txt");
+	//	Charset cs = Charset.forName("UsersChoice");
+		BufferedWriter writer = Files.newBufferedWriter(uc,StandardOpenOption.CREATE);
+		for(int j = 0; j<favs.size();j++){
+		writer.write(favs.get(j));
+		writer.write("  ");
+		}
+	}*/
 }
