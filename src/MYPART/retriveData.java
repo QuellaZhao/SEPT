@@ -212,8 +212,11 @@ public class retriveData{
 		wjp.add(wTable,BorderLayout.CENTER);
 		JPanel bp = new JPanel();
 		JButton graphb = new JButton("Graph");
-		graphb.setPreferredSize(new Dimension(75,25));
+		graphb.setPreferredSize(new Dimension(100,25));
+		JButton refresh = new JButton("Refresh");
+		refresh.setPreferredSize(new Dimension(100,25));
 		bp.add(graphb);
+		bp.add(refresh);
 		graphb.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -265,13 +268,4 @@ public class retriveData{
 	    wjf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		}
 	
-	/*public void saveUsersChoice() throws IOException{
-		Path uc = Paths.get("UsersChoice.txt");
-	//	Charset cs = Charset.forName("UsersChoice");
-		BufferedWriter writer = Files.newBufferedWriter(uc,StandardOpenOption.CREATE);
-		for(int j = 0; j<favs.size();j++){
-		writer.write(favs.get(j));
-		writer.write("  ");
-		}
-	}*/
 }
