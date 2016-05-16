@@ -10,7 +10,6 @@ import com.google.gson.JsonSyntaxException;
 public class mainmenu extends JFrame{
 	public static void main(String[] args) throws JsonIOException, JsonSyntaxException, FileNotFoundException{		
 		mainframe mf = new mainframe();
-		mf.mframe();
+		mf.mFrame();
 	}
 	}
-//testing 1.1
