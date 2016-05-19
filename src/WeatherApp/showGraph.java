@@ -21,8 +21,11 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 
 public class showGraph {
-	ChartPanel gp;
 	public showGraph() throws JsonIOException, JsonSyntaxException, FileNotFoundException{
+		showBOMGraph();
+	}
+	ChartPanel gp;
+	public void showBOMGraph() throws JsonIOException, JsonSyntaxException, FileNotFoundException{
 		retriveDatafromBOM rb = new retriveDatafromBOM();
 		
 		DefaultCategoryDataset linedataset = new DefaultCategoryDataset();

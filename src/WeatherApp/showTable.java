@@ -16,6 +16,9 @@ import com.google.gson.JsonSyntaxException;
 public class showTable {
 	JPanel wjp = new JPanel();
 	public showTable() throws JsonIOException, JsonSyntaxException, FileNotFoundException{
+		showBOMTable();
+	}
+	public void showBOMTable() throws JsonIOException, JsonSyntaxException, FileNotFoundException{
 		retriveDatafromBOM rd = new retriveDatafromBOM();
 		
 		String[] coName = {"Date/Time WST","Temp","App Temp","Dew Point","Rel Hum","Delta-T","Wind Direction","Press MSL hPa","Rain since 9am"};
@@ -52,6 +55,9 @@ public class showTable {
 				}
 			}});
 		wjp.add(bp,BorderLayout.PAGE_END);
+	}
+	public void showForecastTable(){
+		
 	}
 	public JPanel getTablePanel(){
 		return wjp;

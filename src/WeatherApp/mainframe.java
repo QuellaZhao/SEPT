@@ -15,11 +15,9 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 
 public class mainframe{
-JFrame jf,jf2;
+JFrame jf;
 JPanel jp;
 JScrollPane jsp;
-JLabel choose;
-JRadioButton st1,st2,st3,st4,st5,st6,st7,st8;
 String chosen;
 
 public void mFrame() throws JsonIOException, JsonSyntaxException, FileNotFoundException{
