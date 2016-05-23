@@ -2,10 +2,18 @@ package WeatherApp;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileNotFoundException;
+import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
 
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
@@ -17,29 +25,31 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
 public class retriveDatafromBOM {
-	String[] dateTime = new String[5];
-	double[] temp = new double[5];
-	double[] apptemp = new double[5];
-	String[] dew = new String[5];
-	String[] rel = new String[5];
-	String[] deltat = new String[5];
-	String[] winddir = new String[5];
-	String[] press = new String[5];
-	String[] rain = new String[5];
+	private String[] dateTime = new String[5];
+	private double[] temp = new double[5];
+	private double[] apptemp = new double[5];
+	private String[] dew = new String[5];
+	private String[] rel = new String[5];
+	private String[] deltat = new String[5];
+	private String[] winddir = new String[5];
+	private String[] press = new String[5];
+	private String[] rain = new String[5];
 	
-	JComboBox<String> stateCB = new JComboBox<String>();
-	JComboBox<String> cityCB = new JComboBox<String>();
-	JPanel lp = new JPanel();
-	
-	public retriveDatafromBOM() throws JsonIOException, JsonSyntaxException, FileNotFoundException{
+	private JComboBox<String> stateCB = new JComboBox<String>();
+	private JComboBox<String> cityCB = new JComboBox<String>();
+	private JPanel lp = new JPanel();
+
+	private HashMap<String, JsonArray> hm = new HashMap<String, JsonArray>();
+	private HashMap<String, String> URLhm = new HashMap<String, String>();
+
+	public retriveDatafromBOM() throws JsonIOException, JsonSyntaxException, MalformedURLException, IOException{
 		String state;
 
-		HashMap<String, JsonArray> hm = new HashMap<String, JsonArray>();
-		new ArrayList<String>();
 		JsonArray ar = new JsonArray();
 		
-		//get stations names from json file and make then into a combobox
-		//also use hashmap to store states and stations correspondingly 
+		//get station names from json file and put then in a combobox
+		//also use hashmap hm to store states and stations correspondingly 
+		//and another hashmap URLhm will store stations and it's URL
 		JsonParser parser = new JsonParser();
 		JsonObject object = (JsonObject) parser.parse(new FileReader("stations.json"));
 		JsonArray array = object.get("Array").getAsJsonArray();
@@ -49,9 +59,11 @@ public class retriveDatafromBOM {
 			ar = obj.get("stations").getAsJsonArray();
 			hm.put(state, ar);
 			stateCB.addItem(state);
-		
+			for(int o = 0;o<ar.size();o++){
+				JsonObject subobj = ar.get(o).getAsJsonObject();
+				URLhm.put(subobj.get("city").getAsString(), subobj.get("url").getAsString());
+			}		
 		}
-		
 		//when chose a state, the other combobox will display its stations
 		stateCB.addActionListener((new ActionListener(){
 			@Override
@@ -67,19 +79,29 @@ public class retriveDatafromBOM {
 						cityCB.addItem(subobj.get("city").getAsString());
 					}			
 			}}));
+		//add comboboxes into the main panel
 		lp.add(stateCB);
 		lp.add(cityCB);
-		getWeatherData();
 	}
 	
-	public void getWeatherData() throws JsonIOException, JsonSyntaxException, FileNotFoundException{
+	public void getWeatherData(String stationName) throws JsonIOException, JsonSyntaxException, MalformedURLException, IOException{
+		//first get the chosen station's json file URL
+		//read the URL to get the json file
+		URL url = new URL(URLhm.get(stationName));
+		URLConnection uc = url.openConnection();
+		InputStream input = uc.getInputStream();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(input, Charset.forName("UTF-8")));
+		String jsonString = new Scanner(reader).useDelimiter("\\Z").next();
+		
+		//then read the json file to get all data we need
 		JsonParser parser = new JsonParser();
-		JsonObject object = (JsonObject) parser.parse(new FileReader("York.json"));
+		JsonObject object = (JsonObject) parser.parse(jsonString);
 		JsonObject observ = object.get("observations").getAsJsonObject();
 		JsonArray data = observ.get("data").getAsJsonArray();
 		for(int i = 0; i<data.size(); i++){
 			JsonObject obj = data.get(i).getAsJsonObject();
-			dateTime[i] = obj.get("local_date_time").getAsString();
+			
+		//	dateTime[i] = obj.get("local_date_time ").getAsString();
 			temp[i] = obj.get("air_temp").getAsDouble();
 			apptemp[i] = obj.get("apparent_t").getAsDouble();
 			dew[i] = obj.get("dewpt").getAsString();
@@ -90,6 +112,7 @@ public class retriveDatafromBOM {
 			rain[i] = obj.get("rain_trace").getAsString();
 		}
 	}
+	//return some value
 	public String[] getTime(){
 		return dateTime;
 	}
@@ -127,5 +150,9 @@ public class retriveDatafromBOM {
 	
 	public JPanel getMainPanel(){
 		return lp;
+	}
+	
+	public HashMap<String, String> getURLForStation(){
+		return URLhm;
 	}
 }
