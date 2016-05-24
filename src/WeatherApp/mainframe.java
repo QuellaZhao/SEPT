@@ -65,7 +65,6 @@ public class mainframe{
 			jl.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//SOMETHING'S WRONG HERE DONNO WHY	
 				try {
 					try {
 						if(resource.equals("the BOM weather")){

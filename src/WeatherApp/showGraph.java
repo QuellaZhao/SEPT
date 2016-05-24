@@ -9,6 +9,7 @@ import java.io.ObjectInputStream.GetField;
 import java.net.MalformedURLException;
 
 import javax.annotation.Resource;
+import javax.naming.ldap.Rdn;
 import javax.swing.JFrame;
 
 import org.jfree.chart.ChartFactory;
@@ -69,13 +70,13 @@ public class showGraph {
         BasicStroke realLine = new BasicStroke(3.6f);
         renderer.setSeriesStroke(0, realLine); 
         //two different lines to show different values
-        linedataset.addValue(rb.getTemp()[2], "Air Temperature", rb.getTime()[2]);
-        linedataset.addValue(rb.getTemp()[1], "Air Temperature", rb.getTime()[1]);
-        linedataset.addValue(rb.getTemp()[0], "Air Temperature", rb.getTime()[0]);
+        for(int i=0;i<3;i++){
+            linedataset.addValue(rb.getTemp()[i], "Air Temperature", rb.getTime()[i]);        	
+        }
+        for(int i=0;i<3;i++){
+        	linedataset.addValue(rb.getAppTemp()[i], "Apparent Temperature", rb.getTime()[i]);
+        }
         
-        linedataset.addValue(rb.getAppTemp()[2], "Apparent Temperature", rb.getTime()[2]);
-        linedataset.addValue(rb.getAppTemp()[1], "Apparent Temperature", rb.getTime()[1]);
-        linedataset.addValue(rb.getAppTemp()[0], "Apparent Temperature", rb.getTime()[0]);
         gp = new ChartPanel(chart);
 	}
 	public void showForecastGraph() throws JsonIOException, JsonSyntaxException, FileNotFoundException{

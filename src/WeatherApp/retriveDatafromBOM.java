@@ -40,7 +40,7 @@ public class retriveDatafromBOM {
 	private JPanel lp = new JPanel();
 
 	private HashMap<String, JsonArray> hm = new HashMap<String, JsonArray>();
-	private HashMap<String, String> URLhm = new HashMap<String, String>();
+	private static HashMap<String, String> URLhm = new HashMap<String, String>();
 
 	public retriveDatafromBOM() throws JsonIOException, JsonSyntaxException, MalformedURLException, IOException{
 		String state;
@@ -87,29 +87,30 @@ public class retriveDatafromBOM {
 	public void getWeatherData(String stationName) throws JsonIOException, JsonSyntaxException, MalformedURLException, IOException{
 		//first get the chosen station's json file URL
 		//read the URL to get the json file
-		/*URL url = new URL("http://www.bom.gov.au/fwo/IDW60801/IDW60801.94623.json");
+		System.out.println(URLhm.get(stationName));
+		URL url = new URL(URLhm.get(stationName));
 		URLConnection uc = url.openConnection();
 		InputStream input = uc.getInputStream();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(input, Charset.forName("UTF-8")));
-		String jsonString = new Scanner(reader).useDelimiter("\\Z").next();*/
+		String jsonString = new Scanner(reader).useDelimiter("\\Z").next();
 		
 		//then read the json file to get all data we need
 		JsonParser parser = new JsonParser();
-		JsonObject object = (JsonObject) parser.parse(new FileReader("York.json"));
+		JsonObject object = (JsonObject) parser.parse(jsonString);
 		JsonObject observ = object.get("observations").getAsJsonObject();
 		JsonArray data = observ.get("data").getAsJsonArray();
 		for(int i = 0; i<data.size(); i++){
 			JsonObject obj = data.get(i).getAsJsonObject();
 			
-			dateTime[i] = obj.get("local_date_time").getAsString();
+			dateTime[i] = obj.get("local_date_time").toString();
 			temp[i] = obj.get("air_temp").getAsDouble();
 			apptemp[i] = obj.get("apparent_t").getAsDouble();
-			dew[i] = obj.get("dewpt").getAsString();
-			rel[i] = obj.get("rel_hum").getAsString();
-			deltat[i] = obj.get("delta_t").getAsString();
-			winddir[i] = obj.get("wind_dir").getAsString();
-			press[i] = obj.get("press").getAsString();
-			rain[i] = obj.get("rain_trace").getAsString();
+			dew[i] = obj.get("dewpt").toString();
+			rel[i] = obj.get("rel_hum").toString();
+			deltat[i] = obj.get("delta_t").toString();
+			winddir[i] = obj.get("wind_dir").toString();
+			press[i] = obj.get("press").toString();
+			rain[i] = obj.get("rain_trace").toString();
 		}
 	}
 	//return some value

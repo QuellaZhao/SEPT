@@ -40,12 +40,12 @@ public class showTable {
 		//put the data into the table
 		String[] coName = {"Date/Time WST","Temp","App Temp","Dew Point","Rel Hum","Delta-T","Wind Direction","Press MSL hPa","Rain since 9am"};
 		Object[][] datas = {
-				{rd.getTime()[2],rd.getTemp()[2],rd.getAppTemp()[2],rd.getDew()[2],rd.getRel()[2],rd.getDeltat()[2],
-					rd.getWinddir()[2],rd.getPress()[2],rd.getRain()[2]},
+				{rd.getTime()[0],rd.getTemp()[0],rd.getAppTemp()[0],rd.getDew()[0],rd.getRel()[0],rd.getDeltat()[0],
+					rd.getWinddir()[0],rd.getPress()[0],rd.getRain()[0]},
 				{rd.getTime()[1],rd.getTemp()[1],rd.getAppTemp()[1],rd.getDew()[1],rd.getRel()[1],rd.getDeltat()[1],
 					rd.getWinddir()[1],rd.getPress()[1],rd.getRain()[1]},
-				{rd.getTime()[0],rd.getTemp()[0],rd.getAppTemp()[0],rd.getDew()[0],rd.getRel()[0] ,rd.getDeltat()[0],
-							rd.getWinddir()[0],rd.getPress()[0],rd.getRain()[0]}
+				{rd.getTime()[2],rd.getTemp()[2],rd.getAppTemp()[2],rd.getDew()[2],rd.getRel()[2] ,rd.getDeltat()[2],
+					rd.getWinddir()[2],rd.getPress()[2],rd.getRain()[2]}
 		};
 	
 		//show the table
