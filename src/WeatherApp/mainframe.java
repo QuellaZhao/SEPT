@@ -113,7 +113,7 @@ public class mainframe{
 		showGraph sg = new showGraph(resource);
 		double width = Toolkit.getDefaultToolkit().getScreenSize().width; 
 		double height = Toolkit.getDefaultToolkit().getScreenSize().height;
-		JFrame gf = new JFrame("Lateast Weather Observations(3 days)");
+		JFrame gf = new JFrame("Lateast Weather Observations");
 		gf.setSize((int)width/2,(int)height/2);
 		gf.setLocation((int)width/4,(int)height/4); 
 		gf.setResizable(false);

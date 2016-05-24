@@ -30,25 +30,25 @@ public class retriveDatafromForecast {
 	private JsonObject daily;
 	private JsonArray weatherData;
 	
-	private	String[] time = new String[10];
-	private	String[] summarys = new String[10];
-	private	String[] icons = new String[10];
-	private	String[] sunriseTime = new String[10];
-	private String[] sunsetTime = new String[10];
-	private	String[] moonPhase = new String[10];
-	private	String[] precipProbability = new String[10];
-	private	String[] precipType = new String[10];
-	private	double[] temperatureMin = new double[10];
-	private	double[] temperatureMax = new double[10];
-	private	String[] apparentTemperatureMin = new String[10];
-	private String[] apparentTemperatureMax = new String[10];
-	private	String[] dewPoint = new String[10];
-	private String[] humidity = new String[10];
-	private	String[] windSpeed = new String[10];
-	private	String[] windBearing = new String[10];
-	private	String[] cloudCover = new String[10];
-	private	String[] pressure = new String[10];
-	private	String[] ozone = new String[10];
+	private static String[] time = new String[10];
+	private	static String[] summarys = new String[10];
+	private	static String[] icons = new String[10];
+	private	static String[] sunriseTime = new String[10];
+	private static String[] sunsetTime = new String[10];
+	private	static String[] moonPhase = new String[10];
+	private	static String[] precipProbability = new String[10];
+	private	static String[] precipType = new String[10];
+	private	static double[] temperatureMin = new double[10];
+	private	static double[] temperatureMax = new double[10];
+	private	static String[] apparentTemperatureMin = new String[10];
+	private static String[] apparentTemperatureMax = new String[10];
+	private	static String[] dewPoint = new String[10];
+	private static String[] humidity = new String[10];
+	private	static String[] windSpeed = new String[10];
+	private	static String[] windBearing = new String[10];
+	private	static String[] cloudCover = new String[10];
+	private	static String[] pressure = new String[10];
+	private	static String[] ozone = new String[10];
 
 	public retriveDatafromForecast() throws JsonIOException, JsonSyntaxException, FileNotFoundException {
 		String state;
