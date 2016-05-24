@@ -1,107 +1,129 @@
 package WeatherApp;
 
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.MalformedURLException;
 
+import javax.print.attribute.standard.RequestingUserName;
 import javax.swing.*;
+
+import org.junit.experimental.theories.Theories;
 
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 
 public class mainframe{
-JFrame jf,jf2;
-JPanel jp;
-JScrollPane jsp;
-JLabel choose;
-JRadioButton st1,st2,st3,st4,st5,st6,st7,st8;
-String chosen;
-
-public void mFrame() throws JsonIOException, JsonSyntaxException, FileNotFoundException{
-	favs favs = new favs();
-	retriveDatafromBOM rb = new retriveDatafromBOM();
-	jf = new JFrame("What's the weather today?");
-	double width = Toolkit.getDefaultToolkit().getScreenSize().width; 
-	double height = Toolkit.getDefaultToolkit().getScreenSize().height;
-	jf.setSize((int)width/2,(int)height/2);
-	jf.setLocation((int)width/4,(int)height/4); 
-	jf.setResizable(false);
+	private JFrame jf;
+	private JPanel jp;
+	private JScrollPane jsp;
+	private String chosen, stationClicked,chosenResource;
+	private retriveDatafromBOM rdb;
+	private retriveDatafromForecast rdf;
+	private favs fa;
 	
-	jp = favs.getFavPa();
-	
-	jf.add(jp);
-    jf.setVisible(true);
-    jf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);	
-
-}
-
-public void favFrame() throws JsonIOException, JsonSyntaxException, FileNotFoundException{
-	favs favs = new favs();
-	
-	JFrame njf = new JFrame("What's the weather today?");
-	double width = Toolkit.getDefaultToolkit().getScreenSize().width; 
-	double height = Toolkit.getDefaultToolkit().getScreenSize().height;
-	njf.setSize((int)width/5,(int)height/2);
-	njf.setLocation((int)width*2/5,(int)height/5); 
-
-	//put the chosen stations into a new window
-	JPanel wjp = new JPanel();
-	JScrollPane wsjp = new JScrollPane(wjp);
-	wjp.setLayout(new GridLayout(700, 1));
-	JButton jl;
-	for(int n=0;n<favs.getFavs().size();n++){
-		jl = new JButton(favs.getFavs().get(n));				
-		jl.addActionListener(new ActionListener(){
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			try {
-				tableFrame();
-			} catch (JsonIOException e1) {
-				e1.printStackTrace();
-			} catch (JsonSyntaxException e1) {
-				e1.printStackTrace();
-			} catch (FileNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		}});
-		wjp.add(jl);			
+	public String getResources(String resource){
+		chosenResource = resource;
+		return chosenResource;
 	}
-	wsjp.setVerticalScrollBarPolicy(wsjp.VERTICAL_SCROLLBAR_ALWAYS);
-	wsjp.setHorizontalScrollBarPolicy(wsjp.HORIZONTAL_SCROLLBAR_NEVER);
-	njf.add(wsjp);
-	njf.setVisible(true);
-    njf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-}
-
-public void tableFrame() throws JsonIOException, JsonSyntaxException, FileNotFoundException{
-	showTable st = new showTable();
-	JFrame wjf = new JFrame("WEATHER");
-	double width = Toolkit.getDefaultToolkit().getScreenSize().width; 
-	double height = Toolkit.getDefaultToolkit().getScreenSize().height;
-	wjf.setSize((int)width,(int)height/4);
-	wjf.setLocation(0,(int)height/3); 
-	wjf.setResizable(false);
-	wjf.add(st.getTablePanel());
-	wjf.setVisible(true);
-    wjf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-}
-
-public void graphFrame() throws JsonIOException, JsonSyntaxException, FileNotFoundException{
-	showGraph sg = new showGraph();
-	double width = Toolkit.getDefaultToolkit().getScreenSize().width; 
-	double height = Toolkit.getDefaultToolkit().getScreenSize().height;
-	JFrame gf = new JFrame("Lateast Weather Observations(3 days)");
-	gf.setSize((int)width/2,(int)height/2);
-	gf.setLocation((int)width/4,(int)height/4); 
-	gf.setResizable(false);
-	gf.add(sg.getGraphPanel());
-	gf.setVisible(true);
-    gf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-}
+	public void mFrame() throws JsonIOException, JsonSyntaxException, MalformedURLException, IOException{
+		//The main menu, shows when the program launched
+		fa = new favs();
+		rdb = new retriveDatafromBOM();
+		jf = new JFrame("What's the weather?");
+		double width = Toolkit.getDefaultToolkit().getScreenSize().width; 
+		double height = Toolkit.getDefaultToolkit().getScreenSize().height;
+		jf.setSize((int)width/2,(int)height/2);
+		jf.setLocation((int)width/4,(int)height/4); 
+		jf.setResizable(false);
+		jp = fa.getFavPa();
+		jf.add(jp);
+	    jf.setVisible(true);
+	    jf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);	
+	}
+	
+	public void favFrame(String resource) throws JsonIOException, JsonSyntaxException, MalformedURLException, IOException{
+		//a window shows users favorite stations
+		fa = new favs();
+		rdb = new retriveDatafromBOM();
+		rdf = new retriveDatafromForecast();
+		JFrame njf = new JFrame("What's the weather today?");
+		double width = Toolkit.getDefaultToolkit().getScreenSize().width; 
+		double height = Toolkit.getDefaultToolkit().getScreenSize().height;
+		njf.setSize((int)width/5,(int)height/2);
+		njf.setLocation((int)width*2/5,(int)height/5); 
+		JPanel wjp = new JPanel();
+		JScrollPane wsjp = new JScrollPane(wjp);
+		wjp.setLayout(new GridLayout(700, 1));
+		JButton jl;
+		//when the user clicks station button, it will shows its weather data
+		//which is retrieved from specific data resource users choose
+		for(int n=0;n<fa.getFavs().size();n++){
+			jl = new JButton(fa.getFavs().get(n));				
+			jl.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//SOMETHING'S WRONG HERE DONNO WHY	
+				try {
+					try {
+						if(resource.equals("the BOM weather")){
+							stationClicked = e.getActionCommand();
+							rdb.getWeatherData(stationClicked);
+						}
+						else if(resource.equals("the Forecast weather")){
+							rdf.getWeatherData();
+						}
+						else {
+							System.out.println("Please select a data resource.");
+						}
+					} catch (JsonIOException | JsonSyntaxException e2) {e2.printStackTrace();}
+				    stationClicked = e.getActionCommand();
+					tableFrame(resource,stationClicked);
+				} catch (JsonIOException | JsonSyntaxException | IOException e1) {
+					e1.printStackTrace();
+				}
+			}});
+			wjp.add(jl);			
+		}
+		wsjp.setVerticalScrollBarPolicy(wsjp.VERTICAL_SCROLLBAR_ALWAYS);
+		wsjp.setHorizontalScrollBarPolicy(wsjp.HORIZONTAL_SCROLLBAR_NEVER);
+		njf.add(wsjp);
+		njf.setVisible(true);
+	    njf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	}
+	
+	public void tableFrame(String resource, String stationName) throws JsonIOException, JsonSyntaxException, MalformedURLException, IOException{
+		//the window for the weather table
+		showTable st = new showTable(resource, stationName);
+		JFrame wjf = new JFrame("WEATHER");
+		double width = Toolkit.getDefaultToolkit().getScreenSize().width; 
+		double height = Toolkit.getDefaultToolkit().getScreenSize().height;
+		wjf.setSize((int)width,(int)height/2);
+		wjf.setLocation(0,(int)height/3); 
+		wjf.setResizable(false);
+		wjf.add(st.getTablePanel());
+		wjf.setVisible(true);
+	    wjf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	}
+	
+	public void graphFrame(String resource) throws JsonIOException, JsonSyntaxException, MalformedURLException, IOException{
+		//the window for graphs
+		showGraph sg = new showGraph(resource);
+		double width = Toolkit.getDefaultToolkit().getScreenSize().width; 
+		double height = Toolkit.getDefaultToolkit().getScreenSize().height;
+		JFrame gf = new JFrame("Lateast Weather Observations");
+		gf.setSize((int)width/2,(int)height/2);
+		gf.setLocation((int)width/4,(int)height/4); 
+		gf.setResizable(false);
+		gf.add(sg.getGraphPanel());
+		gf.setVisible(true);
+	    gf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	}
+	//return some value
+	
+	public String getClicked(){
+		return stationClicked;
+	}
 }
