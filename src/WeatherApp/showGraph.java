@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream.GetField;
 import java.net.MalformedURLException;
 
+import javax.annotation.Resource;
 import javax.swing.JFrame;
 
 import org.jfree.chart.ChartFactory;
@@ -24,22 +25,25 @@ import com.google.gson.JsonSyntaxException;
 
 public class showGraph {
 	private favs favs = new favs();
+	retriveDatafromBOM rb = new retriveDatafromBOM();
+	retriveDatafromForecast rf = new retriveDatafromForecast();
 	private ChartPanel gp;
+	static String res;
 	public showGraph(String resource) throws JsonIOException, JsonSyntaxException, MalformedURLException, IOException{
 		//get the users choice about data resource
-		if(resource.equals("BOMWeather")){
+		if(resource.equals("the BOM weather")){
 			showBOMGraph();
 		}
-		else if(resource.equals("ForecastWeather")){
+		else if(resource.equals("the Forecast weather")){
 			showForecastGraph();
 		}
 		else {
 			System.out.println("Please select a data resource.");
 		}
+		res = resource;
 	}
 	public void showBOMGraph() throws JsonIOException, JsonSyntaxException, MalformedURLException, IOException{
 		//if the user choose BOM then show BOM weather graph in this method
-		retriveDatafromBOM rb = new retriveDatafromBOM();
 		//make graph for BOM weather
 		DefaultCategoryDataset linedataset = new DefaultCategoryDataset();
 		JFreeChart chart = ChartFactory.createLineChart("The Weather", 
@@ -76,7 +80,7 @@ public class showGraph {
 	}
 	public void showForecastGraph() throws JsonIOException, JsonSyntaxException, FileNotFoundException{
 		//if the user choose Forecast then show forecast weather graph in this method
-		retriveDatafromForecast rf = new retriveDatafromForecast();
+		
 		//make graph for Forecast weather
 		DefaultCategoryDataset linedataset = new DefaultCategoryDataset();
 		JFreeChart chart = ChartFactory.createLineChart("The Weather", 

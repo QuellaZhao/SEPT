@@ -18,6 +18,8 @@ import com.google.gson.JsonSyntaxException;
 public class showTable {
 	private JPanel wjp = new JPanel();
 	private favs favs = new favs();
+	retriveDatafromBOM rd = new retriveDatafromBOM();
+	retriveDatafromForecast rdf = new retriveDatafromForecast();
 	public showTable(String resource, String station) throws JsonIOException, JsonSyntaxException, MalformedURLException, IOException{
 		//get the users choice about data resource
 		mainframe mf = new mainframe();
@@ -34,7 +36,7 @@ public class showTable {
 	
 	public void showBOMTable(String resource) throws JsonIOException, JsonSyntaxException, MalformedURLException, IOException{
 		//if the user choose BOM then show BOM weather in this method
-		retriveDatafromBOM rd = new retriveDatafromBOM();
+		String res = resource;
 		//put the data into the table
 		String[] coName = {"Date/Time WST","Temp","App Temp","Dew Point","Rel Hum","Delta-T","Wind Direction","Press MSL hPa","Rain since 9am"};
 		Object[][] datas = {
@@ -63,7 +65,7 @@ public class showTable {
 			public void actionPerformed(ActionEvent e) {
 				mainframe mf = new mainframe();
 					try {
-						mf.graphFrame(resource);
+						mf.graphFrame(res);
 					} catch (JsonIOException | JsonSyntaxException | IOException e1) {
 						e1.printStackTrace();
 					}
@@ -73,7 +75,7 @@ public class showTable {
 	
 	public void showForecastTable(String resource) throws JsonIOException, JsonSyntaxException, FileNotFoundException{
 		//if the user choose Forecast then show forecast weather in this method
-		retriveDatafromForecast rdf = new retriveDatafromForecast();
+		String res = resource;
 		//put the data into the table
 		String[] coName = {"time", "summary", "icon", "sunriseTime", "sunsetTime", "moonPhase", "precipProbability", "precipType", "temperatureMin", "temperatureMax", "apparentTemperatureMin", "apparentTemperatureMax", "dewPoint", "humidity", "windSpeed", "windBearing", "cloudCover", "pressure", "ozone"};
 		Object[][] datas = {

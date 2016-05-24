@@ -41,4 +41,6 @@ public class WeatherAppTesting {
 		assertEquals("B",favs.getFavs().get(favs.favs.size() - 1));
 	}	
 	
+	
+	
 }

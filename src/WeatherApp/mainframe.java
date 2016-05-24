@@ -69,14 +69,11 @@ public class mainframe{
 				try {
 					try {
 						if(resource.equals("the BOM weather")){
-							try {
-								stationClicked = e.getActionCommand();
-								rdb.getWeatherData(stationClicked);}
-							catch (JsonIOException | JsonSyntaxException | IOException e1) {e1.printStackTrace();}
+							stationClicked = e.getActionCommand();
+							rdb.getWeatherData(stationClicked);
 						}
 						else if(resource.equals("the Forecast weather")){
-							try {rdf.getWeatherData();} 
-							catch (IOException e1) {e1.printStackTrace();}
+							rdf.getWeatherData();
 						}
 						else {
 							System.out.println("Please select a data resource.");

@@ -25,15 +25,15 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
 public class retriveDatafromBOM {
-	private String[] dateTime = new String[5];
-	private double[] temp = new double[5];
-	private double[] apptemp = new double[5];
-	private String[] dew = new String[5];
-	private String[] rel = new String[5];
-	private String[] deltat = new String[5];
-	private String[] winddir = new String[5];
-	private String[] press = new String[5];
-	private String[] rain = new String[5];
+	private static String[] dateTime = new String[5];
+	private static double[] temp = new double[5];
+	private static double[] apptemp = new double[5];
+	private static String[] dew = new String[5];
+	private static String[] rel = new String[5];
+	private static String[] deltat = new String[5];
+	private static String[] winddir = new String[5];
+	private static String[] press = new String[5];
+	private static String[] rain = new String[5];
 	
 	private JComboBox<String> stateCB = new JComboBox<String>();
 	private JComboBox<String> cityCB = new JComboBox<String>();
@@ -87,21 +87,21 @@ public class retriveDatafromBOM {
 	public void getWeatherData(String stationName) throws JsonIOException, JsonSyntaxException, MalformedURLException, IOException{
 		//first get the chosen station's json file URL
 		//read the URL to get the json file
-		URL url = new URL(URLhm.get(stationName));
+		/*URL url = new URL("http://www.bom.gov.au/fwo/IDW60801/IDW60801.94623.json");
 		URLConnection uc = url.openConnection();
 		InputStream input = uc.getInputStream();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(input, Charset.forName("UTF-8")));
-		String jsonString = new Scanner(reader).useDelimiter("\\Z").next();
+		String jsonString = new Scanner(reader).useDelimiter("\\Z").next();*/
 		
 		//then read the json file to get all data we need
 		JsonParser parser = new JsonParser();
-		JsonObject object = (JsonObject) parser.parse(jsonString);
+		JsonObject object = (JsonObject) parser.parse(new FileReader("York.json"));
 		JsonObject observ = object.get("observations").getAsJsonObject();
 		JsonArray data = observ.get("data").getAsJsonArray();
 		for(int i = 0; i<data.size(); i++){
 			JsonObject obj = data.get(i).getAsJsonObject();
 			
-		//	dateTime[i] = obj.get("local_date_time ").getAsString();
+			dateTime[i] = obj.get("local_date_time").getAsString();
 			temp[i] = obj.get("air_temp").getAsDouble();
 			apptemp[i] = obj.get("apparent_t").getAsDouble();
 			dew[i] = obj.get("dewpt").getAsString();
