@@ -25,15 +25,15 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
 public class retriveDatafromBOM {
-	private static String[] dateTime = new String[5];
-	private static double[] temp = new double[5];
-	private static double[] apptemp = new double[5];
-	private static String[] dew = new String[5];
-	private static String[] rel = new String[5];
-	private static String[] deltat = new String[5];
-	private static String[] winddir = new String[5];
-	private static String[] press = new String[5];
-	private static String[] rain = new String[5];
+	private static String[] dateTime = new String[500];
+	private static double[] temp = new double[500];
+	private static double[] apptemp = new double[500];
+	private static String[] dew = new String[500];
+	private static String[] rel = new String[500];
+	private static String[] deltat = new String[500];
+	private static String[] winddir = new String[500];
+	private static String[] press = new String[500];
+	private static String[] rain = new String[500];
 	
 	private JComboBox<String> stateCB = new JComboBox<String>();
 	private JComboBox<String> cityCB = new JComboBox<String>();
@@ -87,7 +87,6 @@ public class retriveDatafromBOM {
 	public void getWeatherData(String stationName) throws JsonIOException, JsonSyntaxException, MalformedURLException, IOException{
 		//first get the chosen station's json file URL
 		//read the URL to get the json file
-		System.out.println(URLhm.get(stationName));
 		URL url = new URL(URLhm.get(stationName));
 		URLConnection uc = url.openConnection();
 		InputStream input = uc.getInputStream();
