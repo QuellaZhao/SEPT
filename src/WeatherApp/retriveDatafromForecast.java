@@ -73,7 +73,7 @@ public class retriveDatafromForecast {
 	
 	public void getWeatherData() throws IOException{
 		new mainframe();
-		//because we can't find stations in Forecast website, we just use data from Melbourne as an example
+		//because we can't find stations but just coordinates in Forecast website, we just use data from Melbourne as an example
 		//get json file from URL by Melbourne's coordinate
 		URL url = new URL("https://api.forecast.io/forecast/aff180e4fd288fc7d48f14d8f74f9daa/-37.8578,144.5191");
 		URLConnection uc = url.openConnection();
@@ -92,25 +92,25 @@ public class retriveDatafromForecast {
 		weatherData = daily.get("data").getAsJsonArray();
 		for(int i=0;i<weatherData.size();i++){
 			JsonObject obj = weatherData.get(i).getAsJsonObject();
-			time[i] = obj.get("time").getAsString();
-	        summarys[i] = obj.get("summary").getAsString();
-	        icons[i] = obj.get("icon").getAsString();
-	        sunriseTime[i] = obj.get("sunriseTime").getAsString();
-	        sunsetTime[i] = obj.get("sunsetTime").getAsString();
-	        moonPhase[i] = obj.get("moonPhase").getAsString();
-	        precipProbability[i] = obj.get("precipProbability").getAsString();
-	        precipType[i] = obj.get("precipType").getAsString();
+			time[i] = obj.get("time").toString();
+	        summarys[i] = obj.get("summary").toString();
+	        icons[i] = obj.get("icon").toString();
+	        sunriseTime[i] = obj.get("sunriseTime").toString();
+	        sunsetTime[i] = obj.get("sunsetTime").toString();
+	        moonPhase[i] = obj.get("moonPhase").toString();
+	        precipProbability[i] = obj.get("precipProbability").toString();
+//	        precipType[i] = obj.get("precipType").toString();
 	        temperatureMin[i] = obj.get("temperatureMin").getAsDouble();
 	        temperatureMax[i] = obj.get("temperatureMax").getAsDouble();
-	        apparentTemperatureMin[i] = obj.get("apparentTemperatureMin").getAsString();
-	        apparentTemperatureMax[i] = obj.get("apparentTemperatureMax").getAsString();
-	        dewPoint[i] = obj.get("dewPoint").getAsString();
-	        humidity[i] = obj.get("humidity").getAsString();
-	        windSpeed[i] = obj.get("windSpeed").getAsString();
-	        windBearing[i] = obj.get("windBearing").getAsString();
-	        cloudCover[i] = obj.get("cloudCover").getAsString();
-	        pressure[i] = obj.get("pressure").getAsString();
-	        ozone[i] = obj.get("ozone").getAsString();		
+	        apparentTemperatureMin[i] = obj.get("apparentTemperatureMin").toString();
+	        apparentTemperatureMax[i] = obj.get("apparentTemperatureMax").toString();
+	        dewPoint[i] = obj.get("dewPoint").toString();
+	        humidity[i] = obj.get("humidity").toString();
+	        windSpeed[i] = obj.get("windSpeed").toString();
+	        windBearing[i] = obj.get("windBearing").toString();
+	        cloudCover[i] = obj.get("cloudCover").toString();
+	        pressure[i] = obj.get("pressure").toString();
+	        ozone[i] = obj.get("ozone").toString();		
 		}
 		
 	}

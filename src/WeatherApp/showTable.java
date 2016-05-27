@@ -23,7 +23,7 @@ public class showTable {
 	public showTable(String resource, String station) throws JsonIOException, JsonSyntaxException, MalformedURLException, IOException{
 		//get the users choice about data resource
 		mainframe mf = new mainframe();
-		if(resource.equals("the BOM weather")){
+		if(resource.equals("OK")){
 			showBOMTable(resource);
 		}
 		else if(resource.equals("the Forecast weather")){

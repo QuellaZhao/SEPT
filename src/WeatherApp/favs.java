@@ -30,7 +30,7 @@ public class favs{
 	private Path uc = Paths.get("UsersChoice.txt");
 	private Charset cs = Charset.forName("US-ASCII");
 	private JPanel favPanel;
-	private JRadioButton bom,forecast;
+	private JButton bom;
 	private ButtonGroup bof;
 	String dataResource;
 	
@@ -98,9 +98,7 @@ public class favs{
 		p1.add(removefav);
 	//	p1.add(confirm);
 		
-		bom = new JRadioButton("the BOM weather");
-		forecast = new JRadioButton("the Forecast weather");
-		
+		bom = new JButton("OK");
 		ActionListener sliceActionListener = new ActionListener() {
 		      public void actionPerformed(ActionEvent actionEvent) {
 		        dataResource = actionEvent.getActionCommand(); 
@@ -112,14 +110,10 @@ public class favs{
 		};
 		    
 		bom.addActionListener(sliceActionListener);
-		forecast.addActionListener(sliceActionListener);
-		 
-		bof = new ButtonGroup();
-		bof.add(bom);
-		bof.add(forecast);
+		
 		p2.setSize((int)width/2, (int)height/4);
 		p2.add(bom);
-		p2.add(forecast);
+		//p2.add(forecast);
 			
 		favPanel = new JPanel(new BorderLayout());
 		favPanel.add(p1,BorderLayout.NORTH);

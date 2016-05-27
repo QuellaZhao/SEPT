@@ -12,6 +12,6 @@ import com.google.gson.JsonSyntaxException;
 public class mainmenu extends JFrame{
 	public static void main(String[] args) throws JsonIOException, JsonSyntaxException, MalformedURLException, IOException{		
 		mainframe mf = new mainframe();
-		mf.mFrame();
+		mf.mainF();
 	}
 	}

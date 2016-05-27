@@ -11,6 +11,7 @@ import javax.print.attribute.standard.RequestingUserName;
 import javax.swing.*;
 
 import org.junit.experimental.theories.Theories;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
@@ -27,6 +28,41 @@ public class mainframe{
 	public String getResources(String resource){
 		chosenResource = resource;
 		return chosenResource;
+	}
+	public void mainF(){
+		JFrame mFrame = new JFrame("Chose the dada resource please!");
+		JPanel mPanel = new JPanel();
+		JButton bJButton,fJButton;
+		double width = Toolkit.getDefaultToolkit().getScreenSize().width; 
+		double height = Toolkit.getDefaultToolkit().getScreenSize().height;
+		mFrame.setSize((int)width/3,(int)height/4);
+		mFrame.setLocation((int)width*1/3,(int)height*1/4); 
+		mFrame.setResizable(false);
+		bJButton = new JButton("BOM");
+		fJButton = new JButton("Forecast");
+		ActionListener buttonAction = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(e.getActionCommand().equals("BOM")){
+					try {mFrame();} 
+					catch (JsonIOException | JsonSyntaxException | IOException e1) {e1.printStackTrace();}
+				}
+				else if(e.getActionCommand().equals("Forecast")){
+					try {
+					favFrame("the Forecast weather");
+					}
+					catch (JsonIOException | JsonSyntaxException | IOException e1) {e1.printStackTrace();}
+				}
+				else{System.out.println("Please choose a data resource!");}
+			}
+		};
+		bJButton.addActionListener(buttonAction);
+		fJButton.addActionListener(buttonAction);
+		mPanel.add(fJButton);
+		mPanel.add(bJButton);
+		mFrame.add(mPanel);
+	    mFrame.setVisible(true);
+	    mFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 	public void mFrame() throws JsonIOException, JsonSyntaxException, MalformedURLException, IOException{
 		//The main menu, shows when the program launched
@@ -67,7 +103,7 @@ public class mainframe{
 			public void actionPerformed(ActionEvent e) {
 				try {
 					try {
-						if(resource.equals("the BOM weather")){
+						if(resource.equals("OK")){
 							stationClicked = e.getActionCommand();
 							rdb.getWeatherData(stationClicked);
 						}

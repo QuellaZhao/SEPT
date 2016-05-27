@@ -32,7 +32,7 @@ public class showGraph {
 	static String res;
 	public showGraph(String resource) throws JsonIOException, JsonSyntaxException, MalformedURLException, IOException{
 		//get the users choice about data resource
-		if(resource.equals("the BOM weather")){
+		if(resource.equals("OK")){
 			showBOMGraph();
 		}
 		else if(resource.equals("the Forecast weather")){
