@@ -1,5 +1,5 @@
 #Fat Jar Configuration File
-#Fri Apr 22 01:58:58 AEST 2016
+#Sat May 28 19:15:18 AEST 2016
 onejar.license.required=false
 manifest.classpath=
 manifest.removesigners=true
@@ -10,5 +10,5 @@ manifest.mainclass=WeatherApp.mainmenu
 manifest.file=<createnew>
 jarname.isextern=false
 onejar.expand=
-excludes=
+excludes=<jar|junit.jar>
 includes=

@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<project default="run" name="WeatherAppBuild">
+	<target name="clean">
+	    <delete dir="C:\Users\Administrator\git\SEPT\build\classes\" />
+	</target>
+	
+	<target name="run" depends="jar">
+		<java fork="true" classname="mainmenu"></java>
+	</target>
+	
+	<target name="compile">
+		<javac includeantruntime="false" srcdir="src\WeatherApp" destdir="C:\Users\Administrator\git\SEPT\build\classes" includes="*.jar">
+		</javac>
+	</target>
+	
+	<!-- Group all dependencies into a big dependency-all.jar -->
+	<target name="copy-dependencies">
+		<jar jarfile="dependencies-all.jar">
+			<zipgroupfileset dir="src\WeatherApp" includes="*.jar">
+				<include name="*.jar" />
+			</zipgroupfileset>
+		</jar>
+
+	</target>
+
+	<!-- jar it, extract above dependency-all.jar and zip it with project files -->
+	<target name="jar" depends="compile, copy-dependencies" 
+                description="package, output to JAR">
+
+		<jar jarfile="WeatherObservation.jar">
+			<manifest>
+				<attribute name="Main-Class" value="mainmenu" />
+			</manifest>
+			<zipfileset src="dependencies-all.jar" excludes="META-INF/*.SF" />
+		</jar>
+
+	</target>
+</project>

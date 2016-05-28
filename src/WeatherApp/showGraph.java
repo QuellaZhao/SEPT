@@ -2,15 +2,9 @@ package WeatherApp;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Toolkit;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.ObjectInputStream.GetField;
 import java.net.MalformedURLException;
-
-import javax.annotation.Resource;
-import javax.naming.ldap.Rdn;
-import javax.swing.JFrame;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -25,6 +19,7 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 
 public class showGraph {
+	@SuppressWarnings("unused")
 	private favs favs = new favs();
 	retriveDatafromBOM rb = new retriveDatafromBOM();
 	retriveDatafromForecast rf = new retriveDatafromForecast();

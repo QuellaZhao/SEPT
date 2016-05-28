@@ -2,13 +2,9 @@ package WeatherApp;
 
 import static org.junit.Assert.*;
 
-import java.awt.Desktop.Action;
-import java.awt.event.ActionEvent;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import com.google.gson.JsonIOException;
