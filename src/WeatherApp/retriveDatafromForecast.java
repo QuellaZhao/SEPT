@@ -24,8 +24,11 @@ import com.google.gson.JsonSyntaxException;
 
 public class retriveDatafromForecast {
 	private JComboBox<String> stateCB = new JComboBox<String>();
+	@SuppressWarnings("unused")
 	private JComboBox<String> cityCB = new JComboBox<String>();
+	@SuppressWarnings("unused")
 	private JPanel lp = new JPanel();
+	@SuppressWarnings("unused")
 	private String lat,longt,timezone,summary,icon;
 	private JsonObject daily;
 	private JsonArray weatherData;
@@ -79,6 +82,7 @@ public class retriveDatafromForecast {
 		URLConnection uc = url.openConnection();
 		InputStream input = uc.getInputStream();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(input, Charset.forName("UTF-8")));
+		@SuppressWarnings("resource")
 		String jsonString = new Scanner(reader).useDelimiter("\\Z").next();
 		//get data we need from the json file
 		JsonParser parser = new JsonParser();

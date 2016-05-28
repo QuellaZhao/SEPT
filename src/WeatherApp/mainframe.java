@@ -7,11 +7,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
-import javax.print.attribute.standard.RequestingUserName;
 import javax.swing.*;
-
-import org.junit.experimental.theories.Theories;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
@@ -19,8 +15,7 @@ import com.google.gson.JsonSyntaxException;
 public class mainframe{
 	private JFrame jf;
 	private JPanel jp;
-	private JScrollPane jsp;
-	private String chosen, stationClicked,chosenResource;
+	private String stationClicked,chosenResource;
 	private retriveDatafromBOM rdb;
 	private retriveDatafromForecast rdf;
 	private favs fa;
@@ -122,8 +117,8 @@ public class mainframe{
 			}});
 			wjp.add(jl);			
 		}
-		wsjp.setVerticalScrollBarPolicy(wsjp.VERTICAL_SCROLLBAR_ALWAYS);
-		wsjp.setHorizontalScrollBarPolicy(wsjp.HORIZONTAL_SCROLLBAR_NEVER);
+		wsjp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		wsjp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		njf.add(wsjp);
 		njf.setVisible(true);
 	    njf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

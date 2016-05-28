@@ -11,7 +11,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -91,6 +90,7 @@ public class retriveDatafromBOM {
 		URLConnection uc = url.openConnection();
 		InputStream input = uc.getInputStream();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(input, Charset.forName("UTF-8")));
+		@SuppressWarnings("resource")
 		String jsonString = new Scanner(reader).useDelimiter("\\Z").next();
 		
 		//then read the json file to get all data we need

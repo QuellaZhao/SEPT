@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.charset.Charset;
@@ -16,12 +15,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 
-import javax.swing.AbstractButton;
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 
@@ -31,7 +26,6 @@ public class favs{
 	private Charset cs = Charset.forName("US-ASCII");
 	private JPanel favPanel;
 	private JButton bom;
-	private ButtonGroup bof;
 	String dataResource;
 	
 	public favs() throws JsonIOException, JsonSyntaxException, MalformedURLException, IOException{
@@ -41,7 +35,7 @@ public class favs{
 		double width = Toolkit.getDefaultToolkit().getScreenSize().width; 
 		double height = Toolkit.getDefaultToolkit().getScreenSize().height;
 		retriveDatafromBOM rb = new retriveDatafromBOM();
-		retriveDatafromForecast rdff = new retriveDatafromForecast();
+		new retriveDatafromForecast();
 	
 		//Get user's choices 
 		try(BufferedReader reader = Files.newBufferedReader(uc,cs)) {
