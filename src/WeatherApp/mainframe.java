@@ -87,6 +87,7 @@ public class mainframe{
 		jf.add(jp);
 	    jf.setVisible(true);
 	    jf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);	
+	    logger.info("Main menu had been launched");
 	}
 	
 	public void favFrame(String resource) throws JsonIOException, JsonSyntaxException, MalformedURLException, IOException{
@@ -116,6 +117,7 @@ public class mainframe{
 						if(resource.equals("OK")){
 							stationClicked = e.getActionCommand();
 							rdb.getWeatherData(stationClicked);
+							logger.info("A station has been selected");
 							
 						}
 						else if(resource.equals("the Forecast weather")){
@@ -138,6 +140,7 @@ public class mainframe{
 		njf.add(wsjp);
 		njf.setVisible(true);
 	    njf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	    logger.info("The weather info will now be collected from the json files.");
 	}
 	
 	public void tableFrame(String resource, String stationName) throws JsonIOException, JsonSyntaxException, MalformedURLException, IOException{
