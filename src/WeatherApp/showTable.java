@@ -8,6 +8,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.apache.log4j.*;
+import org.apache.log4j.BasicConfigurator;
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTable;
@@ -19,6 +24,7 @@ public class showTable {
 	private JPanel wjp = new JPanel();
 	@SuppressWarnings("unused")
 	private favs favs = new favs();
+	private static final Logger logger = LoggerFactory.getLogger(showTable.class);
 	retriveDatafromBOM rd = new retriveDatafromBOM();
 	retriveDatafromForecast rdf = new retriveDatafromForecast();
 	public showTable(String resource, String station) throws JsonIOException, JsonSyntaxException, MalformedURLException, IOException{
@@ -107,6 +113,7 @@ public class showTable {
 		}  ;
 	
 		//show the table
+		BasicConfigurator.configure();
 		JTable wTable = new JTable(datas,coName);
 		wjp.setLayout(new BorderLayout());
 		wjp.add(wTable.getTableHeader(),BorderLayout.PAGE_START);
@@ -127,6 +134,7 @@ public class showTable {
 					} catch (JsonIOException | JsonSyntaxException | IOException e1) {
 						e1.printStackTrace();
 					}
+					logger.info("The table with all weather info has been plotted for the station you have chosen");
 			}});
 		wjp.add(bp,BorderLayout.PAGE_END);
 	}

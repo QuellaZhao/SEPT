@@ -6,6 +6,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.apache.log4j.*;
+import org.apache.log4j.BasicConfigurator;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -24,7 +29,9 @@ public class showGraph {
 	retriveDatafromBOM rb = new retriveDatafromBOM();
 	retriveDatafromForecast rf = new retriveDatafromForecast();
 	private ChartPanel gp;
+	private static final Logger logger = LoggerFactory.getLogger(showGraph.class);
 	static String res;
+	
 	public showGraph(String resource) throws JsonIOException, JsonSyntaxException, MalformedURLException, IOException{
 		//get the users choice about data resource
 		if(resource.equals("OK")){
@@ -100,7 +107,8 @@ public class showGraph {
 	    plot.getRenderer().setSeriesPaint(1, Color.blue) ;
 		LineAndShapeRenderer renderer = (LineAndShapeRenderer) plot.getRenderer();        
         BasicStroke realLine = new BasicStroke(3.6f);
-        renderer.setSeriesStroke(0, realLine); 
+        renderer.setSeriesStroke(0, realLine);
+        BasicConfigurator.configure();
         //two different lines to show different values
         linedataset.addValue(rf.gettemperatureMin()[6], "Temperature Min", rf.getTime()[6]);
         linedataset.addValue(rf.gettemperatureMin()[5], "Temperature Min", rf.getTime()[5]);
@@ -118,6 +126,7 @@ public class showGraph {
         linedataset.addValue(rf.gettemperatureMax()[1], "Temperature Max", rf.getTime()[1]);
         linedataset.addValue(rf.gettemperatureMax()[0], "Temperature Max", rf.getTime()[0]);
         gp = new ChartPanel(chart);
+        logger.info("The graph has been plotted for the station you have chosen");
 	}
 	//return some value
 	public ChartPanel getGraphPanel(){

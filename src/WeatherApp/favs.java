@@ -31,7 +31,7 @@ public class favs{
 	private JPanel favPanel;
 	private JButton bom;
 	String dataResource;
-	private static final Logger logger = LoggerFactory.getLogger(mainframe.class);
+	private static final Logger logger = LoggerFactory.getLogger(favs.class);
 	
 	public favs() throws JsonIOException, JsonSyntaxException, MalformedURLException, IOException{
 		JPanel p1,p2;

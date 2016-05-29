@@ -51,13 +51,15 @@ public class mainframe{
 			public void actionPerformed(ActionEvent e) {
 				if(e.getActionCommand().equals("BOM")){
 					try {mFrame();
-					logger.info("User has selected the BOM website");} 
+					logger.info("User has selected the BOM website");
+					logger.warn("Please select only 1 station at one time");} 
 					catch (JsonIOException | JsonSyntaxException | IOException e1) {e1.printStackTrace();}
 				}
 				else if(e.getActionCommand().equals("Forecast")){
 					try {
 					favFrame("the Forecast weather");
 					logger.info("User has selected the Forecast website");
+					logger.warn("Please select only 1 station at one time");
 					}
 					
 					catch (JsonIOException | JsonSyntaxException | IOException e1) {e1.printStackTrace();}
@@ -106,7 +108,7 @@ public class mainframe{
 		JButton jl;
 		//when the user clicks station button, it will shows its weather data
 		//which is retrieved from specific data resource users choose
-	
+		logger.info("when the user clicks station button, it will shows its weather data");
 		for(int n=0;n<fa.getFavs().size();n++){
 			jl = new JButton(fa.getFavs().get(n));				
 			jl.addActionListener(new ActionListener(){
