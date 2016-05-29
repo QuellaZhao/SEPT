@@ -14,6 +14,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.apache.log4j.*;
+import org.apache.log4j.BasicConfigurator;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -27,6 +31,7 @@ public class favs{
 	private JPanel favPanel;
 	private JButton bom;
 	String dataResource;
+	private static final Logger logger = LoggerFactory.getLogger(mainframe.class);
 	
 	public favs() throws JsonIOException, JsonSyntaxException, MalformedURLException, IOException{
 		JPanel p1,p2;
@@ -36,6 +41,7 @@ public class favs{
 		double height = Toolkit.getDefaultToolkit().getScreenSize().height;
 		retriveDatafromBOM rb = new retriveDatafromBOM();
 		new retriveDatafromForecast();
+		BasicConfigurator.configure();
 	
 		//Get user's choices 
 		try(BufferedReader reader = Files.newBufferedReader(uc,cs)) {
@@ -59,6 +65,7 @@ public class favs{
 					System.out.println("write failed");
 					e1.printStackTrace();
 				}
+				logger.info("A station has been added by the user");
 		}});
 					
 		//remove selected station in favorites
@@ -75,6 +82,7 @@ public class favs{
 				System.out.println("write failed");
 				e1.printStackTrace();
 			}
+			logger.info("User has removed a station from the favorites");
 		}});
 					
 		//confirm and display all selected stations
@@ -101,6 +109,7 @@ public class favs{
 		    	  mf.favFrame(dataResource);}
 				catch (JsonIOException | JsonSyntaxException | IOException e1) {e1.printStackTrace();}
 		      }
+		      logger.info("User has selected the station/s to view the weather for");
 		};
 		    
 		bom.addActionListener(sliceActionListener);
