@@ -7,7 +7,15 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import javax.print.attribute.standard.RequestingUserName;
 import javax.swing.*;
+
+import org.junit.experimental.theories.Theories;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.apache.log4j.*;
+import org.apache.log4j.BasicConfigurator;
 
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
@@ -15,10 +23,12 @@ import com.google.gson.JsonSyntaxException;
 public class mainframe{
 	private JFrame jf;
 	private JPanel jp;
-	private String stationClicked,chosenResource;
+	private JScrollPane jsp;
+	private String chosen, stationClicked,chosenResource;
 	private retriveDatafromBOM rdb;
 	private retriveDatafromForecast rdf;
 	private favs fa;
+	private static final Logger logger = LoggerFactory.getLogger(mainframe.class);
 	
 	public String getResources(String resource){
 		chosenResource = resource;
@@ -33,19 +43,23 @@ public class mainframe{
 		mFrame.setSize((int)width/3,(int)height/4);
 		mFrame.setLocation((int)width*1/3,(int)height*1/4); 
 		mFrame.setResizable(false);
+		BasicConfigurator.configure();
 		bJButton = new JButton("BOM");
 		fJButton = new JButton("Forecast");
 		ActionListener buttonAction = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(e.getActionCommand().equals("BOM")){
-					try {mFrame();} 
+					try {mFrame();
+					logger.info("User has selected the BOM website");} 
 					catch (JsonIOException | JsonSyntaxException | IOException e1) {e1.printStackTrace();}
 				}
 				else if(e.getActionCommand().equals("Forecast")){
 					try {
 					favFrame("the Forecast weather");
+					logger.info("User has selected the Forecast website");
 					}
+					
 					catch (JsonIOException | JsonSyntaxException | IOException e1) {e1.printStackTrace();}
 				}
 				else{System.out.println("Please choose a data resource!");}
@@ -91,6 +105,7 @@ public class mainframe{
 		JButton jl;
 		//when the user clicks station button, it will shows its weather data
 		//which is retrieved from specific data resource users choose
+	
 		for(int n=0;n<fa.getFavs().size();n++){
 			jl = new JButton(fa.getFavs().get(n));				
 			jl.addActionListener(new ActionListener(){
@@ -101,6 +116,7 @@ public class mainframe{
 						if(resource.equals("OK")){
 							stationClicked = e.getActionCommand();
 							rdb.getWeatherData(stationClicked);
+							
 						}
 						else if(resource.equals("the Forecast weather")){
 							rdf.getWeatherData();
@@ -117,8 +133,8 @@ public class mainframe{
 			}});
 			wjp.add(jl);			
 		}
-		wsjp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		wsjp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		wsjp.setVerticalScrollBarPolicy(wsjp.VERTICAL_SCROLLBAR_ALWAYS);
+		wsjp.setHorizontalScrollBarPolicy(wsjp.HORIZONTAL_SCROLLBAR_NEVER);
 		njf.add(wsjp);
 		njf.setVisible(true);
 	    njf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
