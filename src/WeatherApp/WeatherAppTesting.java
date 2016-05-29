@@ -32,9 +32,9 @@ public class WeatherAppTesting {
 	public void removeFavTest() throws JsonIOException, JsonSyntaxException, MalformedURLException, IOException {
 		favs favs = new favs();
 		favs.favs.add("York");
-		favs.favs.add("B");
+		favs.favs.add("Melbourne Airport");
 		favs.favs.remove("York");
-		assertEquals("B",favs.getFavs().get(favs.favs.size() - 1));
+		assertEquals("Melbourne Airport",favs.getFavs().get(favs.favs.size() - 1));
 	}	
 	
 	
