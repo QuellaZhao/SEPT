@@ -51,13 +51,15 @@ public class mainframe{
 			public void actionPerformed(ActionEvent e) {
 				if(e.getActionCommand().equals("BOM")){
 					try {mFrame();
-					logger.info("User has selected the BOM website");} 
+					logger.info("User has selected the BOM website");
+					logger.warn("Please select only 1 station at one time");} 
 					catch (JsonIOException | JsonSyntaxException | IOException e1) {e1.printStackTrace();}
 				}
 				else if(e.getActionCommand().equals("Forecast")){
 					try {
 					favFrame("the Forecast weather");
 					logger.info("User has selected the Forecast website");
+					logger.warn("Please select only 1 station at one time");
 					}
 					
 					catch (JsonIOException | JsonSyntaxException | IOException e1) {e1.printStackTrace();}
@@ -87,6 +89,7 @@ public class mainframe{
 		jf.add(jp);
 	    jf.setVisible(true);
 	    jf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);	
+	    logger.info("Main menu had been launched");
 	}
 	
 	public void favFrame(String resource) throws JsonIOException, JsonSyntaxException, MalformedURLException, IOException{
@@ -105,7 +108,7 @@ public class mainframe{
 		JButton jl;
 		//when the user clicks station button, it will shows its weather data
 		//which is retrieved from specific data resource users choose
-	
+		logger.info("when the user clicks station button, it will shows its weather data");
 		for(int n=0;n<fa.getFavs().size();n++){
 			jl = new JButton(fa.getFavs().get(n));				
 			jl.addActionListener(new ActionListener(){
@@ -116,6 +119,7 @@ public class mainframe{
 						if(resource.equals("OK")){
 							stationClicked = e.getActionCommand();
 							rdb.getWeatherData(stationClicked);
+							logger.info("A station has been selected");
 							
 						}
 						else if(resource.equals("the Forecast weather")){
@@ -138,6 +142,7 @@ public class mainframe{
 		njf.add(wsjp);
 		njf.setVisible(true);
 	    njf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	    logger.info("The weather info will now be collected from the json files.");
 	}
 	
 	public void tableFrame(String resource, String stationName) throws JsonIOException, JsonSyntaxException, MalformedURLException, IOException{

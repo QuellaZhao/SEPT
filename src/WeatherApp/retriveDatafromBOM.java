@@ -17,6 +17,11 @@ import java.util.Scanner;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.apache.log4j.*;
+import org.apache.log4j.BasicConfigurator;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
@@ -37,15 +42,18 @@ public class retriveDatafromBOM {
 	private JComboBox<String> stateCB = new JComboBox<String>();
 	private JComboBox<String> cityCB = new JComboBox<String>();
 	private JPanel lp = new JPanel();
+	private static final Logger logger = LoggerFactory.getLogger(retriveDatafromBOM.class);
 
 	private HashMap<String, JsonArray> hm = new HashMap<String, JsonArray>();
 	private static HashMap<String, String> URLhm = new HashMap<String, String>();
+	
 
 	public retriveDatafromBOM() throws JsonIOException, JsonSyntaxException, MalformedURLException, IOException{
 		String state;
 
 		JsonArray ar = new JsonArray();
 		
+		BasicConfigurator.configure();
 		//get station names from json file and put then in a combobox
 		//also use hashmap hm to store states and stations correspondingly 
 		//and another hashmap URLhm will store stations and it's URL
@@ -63,6 +71,7 @@ public class retriveDatafromBOM {
 				URLhm.put(subobj.get("city").getAsString(), subobj.get("url").getAsString());
 			}		
 		}
+		 logger.info("The station names have been stored from the json files on BOM");
 		//when chose a state, the other combobox will display its stations
 		stateCB.addActionListener((new ActionListener(){
 			@Override
@@ -81,6 +90,7 @@ public class retriveDatafromBOM {
 		//add comboboxes into the main panel
 		lp.add(stateCB);
 		lp.add(cityCB);
+		 logger.info("Please select the stations in the state you have selected");
 	}
 	
 	public void getWeatherData(String stationName) throws JsonIOException, JsonSyntaxException, MalformedURLException, IOException{
@@ -110,6 +120,7 @@ public class retriveDatafromBOM {
 			winddir[i] = obj.get("wind_dir").toString();
 			press[i] = obj.get("press").toString();
 			rain[i] = obj.get("rain_trace").toString();
+			logger.info("The weather info has been stored from the json files on BOM");
 		}
 	}
 	//return some value

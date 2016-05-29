@@ -13,6 +13,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.apache.log4j.*;
+import org.apache.log4j.BasicConfigurator;
+
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
@@ -32,6 +37,7 @@ public class retriveDatafromForecast {
 	private String lat,longt,timezone,summary,icon;
 	private JsonObject daily;
 	private JsonArray weatherData;
+	private static final Logger logger = LoggerFactory.getLogger(retriveDatafromForecast.class);
 	
 	private static String[] time = new String[10];
 	private	static String[] summarys = new String[10];
@@ -52,7 +58,7 @@ public class retriveDatafromForecast {
 	private	static String[] cloudCover = new String[10];
 	private	static String[] pressure = new String[10];
 	private	static String[] ozone = new String[10];
-
+	
 	public retriveDatafromForecast() throws JsonIOException, JsonSyntaxException, FileNotFoundException {
 		String state;
 
@@ -78,6 +84,8 @@ public class retriveDatafromForecast {
 		new mainframe();
 		//because we can't find stations but just coordinates in Forecast website, we just use data from Melbourne as an example
 		//get json file from URL by Melbourne's coordinate
+		
+		BasicConfigurator.configure();
 		URL url = new URL("https://api.forecast.io/forecast/aff180e4fd288fc7d48f14d8f74f9daa/-37.8578,144.5191");
 		URLConnection uc = url.openConnection();
 		InputStream input = uc.getInputStream();
@@ -115,6 +123,7 @@ public class retriveDatafromForecast {
 	        cloudCover[i] = obj.get("cloudCover").toString();
 	        pressure[i] = obj.get("pressure").toString();
 	        ozone[i] = obj.get("ozone").toString();		
+	        logger.info("The weather data has been acquired from the json files on forecast.io");
 		}
 		
 	}
@@ -175,5 +184,7 @@ public class retriveDatafromForecast {
 	}
 	public String[] getozone(){
 		return ozone;
+		
 	}
+	
 }
